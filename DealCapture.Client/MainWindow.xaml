@@ -1,0 +1,27 @@
+﻿<Window x:Class="DealCapture.Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="NOTIS90" Height="350" Width="525"
+        Style="{StaticResource WindowRegionStyle}">
+    <TabControl>
+        <TabItem Header="Active Deals">
+            <DockPanel>
+                <ToolBarTray DockPanel.Dock="Top">
+                    <ToolBar>
+                        <Button Command="{Binding CreateDealCommand}">Create</Button>
+                        <Button Command="{Binding EditSelectedDealCommand}" 
+                                CommandParameter="{Binding  }">Edit</Button>
+                    </ToolBar>
+                </ToolBarTray>
+                <DataGrid ItemsSource="{Binding ActiveDeals}"
+                          SelectionMode="Single"
+                          SelectedItem="{Binding SelectedDeal}">
+
+
+                </DataGrid>
+            </DockPanel>
+        </TabItem>
+        <!--<TabItem Header="Deal History"/>
+        <TabItem Header="PnL"/>-->
+    </TabControl>
+</Window>

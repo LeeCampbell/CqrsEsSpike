@@ -1,0 +1,118 @@
+﻿<Window x:Class="DealCapture.Client.CreateDeal.DealCaptureView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:createDeal="clr-namespace:DealCapture.Client.CreateDeal"
+        Title="DealCaptureView" 
+        Style="{StaticResource PopupRegionStyle}"
+        Padding="20"
+        Height="450"
+        Width="722"
+        MinHeight="300"
+        MinWidth="300"
+        MaxWidth="800">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top">
+            <TextBlock Style="{StaticResource PageHeaderStyle}">
+                Create Deal
+            </TextBlock>
+
+            <HeaderedContentControl Header="DealId" Style="{StaticResource FormEntryHeaderStyle}">
+                <TextBox Text="{Binding DealId, Mode=OneWay}" 
+                         IsReadOnly="True" 
+                         Width="200"/>
+            </HeaderedContentControl>
+
+            <HeaderedContentControl Header="Trader" Style="{StaticResource FormEntryHeaderStyle}">
+                <TextBox Text="{Binding Trader, Mode=OneWay}" 
+                         IsReadOnly="True" 
+                         Width="200"/>
+            </HeaderedContentControl>
+
+            <HeaderedContentControl Header="Counterparty" Style="{StaticResource FormEntryHeaderStyle}">
+                <ComboBox SelectedValue="{Binding Counterparty}" SelectedValuePath="Content" Width="200">
+                    <ComboBoxItem>Client A</ComboBoxItem>
+                    <ComboBoxItem>Client B</ComboBoxItem>
+                    <ComboBoxItem>Client C</ComboBoxItem>
+                </ComboBox>
+            </HeaderedContentControl>
+
+        </StackPanel>
+
+        
+        
+        <DockPanel DockPanel.Dock="Bottom">
+            <Button DockPanel.Dock="Left"
+                    Command="{Binding SubmitCommand}"
+                    Margin="10,10,20,10">
+                Submit
+            </Button>
+
+            <ProgressBar IsIndeterminate="True"
+                         Height="10"
+                         DockPanel.Dock="Bottom"
+                         Visibility="{Binding Path=State.IsProcessing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </DockPanel>
+        
+        <TextBlock Text="{Binding Path=State.ErrorMessage}"
+                   Foreground="Red"
+                   DockPanel.Dock="Bottom"
+                   Visibility="{Binding Path=State.HasError, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+        <GroupBox Header="Sections">
+            <ScrollViewer>
+                <StackPanel>
+                    <StackPanel.Resources>
+                        <Style TargetType="HeaderedContentControl" BasedOn="{StaticResource SubFormEntryHeaderStyle}">
+                            <Setter Property="Width" Value="120"/>
+                            <Setter Property="Margin" Value="5,0"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <ItemsControl ItemsSource="{Binding Sections}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="createDeal:DealEntrySection">
+                                <StackPanel Orientation="Horizontal">
+                                    <HeaderedContentControl Header="Product" >
+                                        <ComboBox SelectedValue="{Binding ProductType}"
+                                              SelectedValuePath="Content">
+                                            <ComboBoxItem>Coconut</ComboBoxItem>
+                                            <ComboBoxItem>Palm</ComboBoxItem>
+                                            <ComboBoxItem>SoyBean</ComboBoxItem>
+                                            <ComboBoxItem>Sunflower</ComboBoxItem>
+                                            <ComboBoxItem>Rapeseed</ComboBoxItem>
+                                        </ComboBox>
+                                    </HeaderedContentControl>
+
+                                    <HeaderedContentControl Header="Notional">
+                                        <TextBox Text="{Binding Notional, NotifyOnValidationError=True, ValidatesOnDataErrors=True, ValidatesOnNotifyDataErrors=True, ValidatesOnExceptions=True}" />
+                                    </HeaderedContentControl>
+
+                                    <HeaderedContentControl Header="Deliver from" >
+                                        <DatePicker SelectedDate="{Binding DeliverFrom}" />
+                                    </HeaderedContentControl>
+
+                                    <HeaderedContentControl Header="Deliver until">
+                                        <DatePicker SelectedDate="{Binding DeliverUntil}" />
+                                    </HeaderedContentControl>
+
+                                    <Button Command="{Binding RemoveSectionCommand}" CommandParameter="{Binding}"
+                                        ToolTip="Remove this section"
+                                        Margin="10,0">
+                                        Remove
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Button Command="{Binding AddSectionCommand}" 
+                        ToolTip="Add another section to the deal"
+                        Margin="8">Add...</Button>
+
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+
+
+    </DockPanel>
+</Window>

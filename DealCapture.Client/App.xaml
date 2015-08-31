@@ -1,0 +1,20 @@
+﻿<Application x:Class="DealCapture.Client.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+                </ResourceDictionary>
+                <ResourceDictionary Source="/Styles/Brushes.xaml"/>
+                <ResourceDictionary Source="/Styles/Text.xaml"/>
+                <ResourceDictionary Source="/Styles/Button.xaml"/>
+                <ResourceDictionary Source="/Styles/HeaderedContent.xaml"/>
+                <ResourceDictionary Source="/Styles/TabControl.xaml"/>
+                <ResourceDictionary Source="/Styles/Window.xaml"/>
+                <ResourceDictionary Source="/Styles/DatePicker.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
