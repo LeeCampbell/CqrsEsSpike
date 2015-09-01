@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using DealCapture.Client.Dashboards;
 using DealCapture.Client.Repositories;
 using DealCapture.Client.Repositories.EventStore;
 using DealCapture.Client.Repositories.MessageBus;

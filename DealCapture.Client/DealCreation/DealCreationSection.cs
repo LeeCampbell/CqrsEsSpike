@@ -1,20 +1,19 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using DealCapture.Client.Annotations;
 using Microsoft.Practices.Prism.Commands;
 
-namespace DealCapture.Client.CreateDeal
+namespace DealCapture.Client.DealCreation
 {
-    public sealed class DealEntrySection : INotifyPropertyChanged
+    public sealed class DealCreationSection : INotifyPropertyChanged
     {
         private string _productType;
         private decimal? _notional;
         private DateTime? _deliverFrom;
         private DateTime? _deliverUntil;
 
-        public DealEntrySection()
+        public DealCreationSection()
         {
             PropertyChanged += (s, e) => Validate();
         }
@@ -73,7 +72,7 @@ namespace DealCapture.Client.CreateDeal
                 && DeliverUntil.HasValue;
         }
 
-        public DelegateCommand<DealEntrySection> RemoveSectionCommand { get; set; }
+        public DelegateCommand<DealCreationSection> RemoveSectionCommand { get; set; }
 
         #region INPC
 

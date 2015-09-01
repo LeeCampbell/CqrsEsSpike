@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace DealCapture.Client.CreateDeal
+namespace DealCapture.Client.DealCreation
 {
     /// <summary>
     /// Interaction logic for DealCaptureView.xaml

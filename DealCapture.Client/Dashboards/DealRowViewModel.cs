@@ -3,11 +3,13 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using DealCapture.Client.Annotations;
 
-namespace DealCapture.Client
+namespace DealCapture.Client.Dashboards
 {
     public class DealRowViewModel : INotifyPropertyChanged
     {
         private readonly Guid _dealId;
+        private readonly int _categoryVersion;
+        private readonly int _dealVersion;
         private string _trader;
         private string _counterparty;
         private string _underlying;
@@ -16,12 +18,16 @@ namespace DealCapture.Client
         private DateTime _deliveryWindowEndDate;
         private string _status;
 
-        public DealRowViewModel(Guid dealId)
+        public DealRowViewModel(Guid dealId, int categoryVersion, int dealVersion)
         {
             _dealId = dealId;
+            _categoryVersion = categoryVersion;
+            _dealVersion = dealVersion;
         }
 
         public Guid DealId { get { return _dealId; } }
+        public int CategoryVersion { get { return _categoryVersion; } }
+        public int DealVersion { get { return _dealVersion; } }
 
         public string Trader
         {
@@ -101,6 +107,7 @@ namespace DealCapture.Client
                 OnPropertyChanged();
             }
         }
+
 
         #region INPC
 

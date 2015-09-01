@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
@@ -10,17 +11,17 @@ using DealCapture.Client.Repositories;
 using DealCapture.Client.Repositories.Dto;
 using Microsoft.Practices.Prism.Commands;
 
-namespace DealCapture.Client.CreateDeal
+namespace DealCapture.Client.DealCreation
 {
-    public sealed class DealEntryViewModel : INotifyPropertyChanged
+    public sealed class DealCreationViewModel : INotifyPropertyChanged
     {
         private readonly IDealRepository _dealRepository;
-        private readonly ObservableCollection<DealEntrySection> _sections = new ObservableCollection<DealEntrySection>();
+        private readonly ObservableCollection<DealCreationSection> _sections = new ObservableCollection<DealCreationSection>();
         private string _counterparty;
         private readonly Guid _dealId;
         private ViewModelState _state;
 
-        public DealEntryViewModel(IDealRepository dealRepository, Guid dealId)
+        public DealCreationViewModel(IDealRepository dealRepository, Guid dealId)
         {
             _dealRepository = dealRepository;
             _dealId = dealId;
@@ -59,16 +60,17 @@ namespace DealCapture.Client.CreateDeal
             }
         }
 
-        public ObservableCollection<DealEntrySection> Sections { get { return _sections; } }
+        public ObservableCollection<DealCreationSection> Sections { get { return _sections; } }
 
         public DelegateCommand AddSectionCommand { get; private set; }
 
         public DelegateCommand SubmitCommand { get; private set; }
+        
 
         private void AddSection()
         {
-            var section = new DealEntrySection();
-            section.RemoveSectionCommand = new DelegateCommand<DealEntrySection>(RemoveSection);
+            var section = new DealCreationSection();
+            section.RemoveSectionCommand = new DelegateCommand<DealCreationSection>(RemoveSection);
             section.PropertyChanged += Section_PropertyChanged;
             _sections.Add(section);
         }
@@ -78,7 +80,7 @@ namespace DealCapture.Client.CreateDeal
             SubmitCommand.RaiseCanExecuteChanged();
         }
 
-        private void RemoveSection(DealEntrySection section)
+        private void RemoveSection(DealCreationSection section)
         {
             section.PropertyChanged += Section_PropertyChanged;
             _sections.Remove(section);
@@ -112,7 +114,7 @@ namespace DealCapture.Client.CreateDeal
                     },
                     () =>
                     {
-                        State = ViewModelState.Idle;
+                        State = ViewModelState.Terminal;
                     });
 
         }
@@ -128,7 +130,7 @@ namespace DealCapture.Client.CreateDeal
             };
         }
 
-        private static DealSection BuildDealSection(DealEntrySection input)
+        private static DealSection BuildDealSection(DealCreationSection input)
         {
             return new DealSection
             {

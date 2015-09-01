@@ -110,18 +110,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CreateDeal\DealEntrySection.cs" />
-    <Compile Include="CreateDeal\DealEntryViewModel.cs" />
+    <Compile Include="DealCreation\DealCreationSection.cs" />
+    <Compile Include="DealCreation\DealCreationViewModel.cs" />
     <Compile Include="DealEnrichment\DealEnrichmentView.xaml.cs">
       <DependentUpon>DealEnrichmentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DealEnrichment\DealEnrichmentViewModel.cs" />
+    <Compile Include="NotificationExtensions.cs" />
+    <Compile Include="PropertyExtensions.cs" />
     <Compile Include="ViewModelState.cs" />
     <Compile Include="Repositories\EventStore\StreamNames.cs" />
     <Compile Include="Repositories\JsonEx.cs" />
     <Compile Include="Repositories\MessageBus\MessageBusClient.cs" />
     <Compile Include="Repositories\Server\DealEntryCommandHandler.cs" />
-    <Page Include="CreateDeal\DealCaptureView.xaml">
+    <Page Include="DealCreation\DealCaptureView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -137,13 +139,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CreateDeal\DealCaptureView.xaml.cs">
+    <Compile Include="DealCreation\DealCaptureView.xaml.cs">
       <DependentUpon>DealCaptureView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActiveDealDashboardViewModel.cs" />
+    <Compile Include="Dashboards\ActiveDealDashboardViewModel.cs" />
     <Compile Include="Repositories\Dto\CreateDealCommand.cs" />
     <Compile Include="Repositories\DealRepository.cs" />
-    <Compile Include="DealRowViewModel.cs" />
+    <Compile Include="Dashboards\DealRowViewModel.cs" />
     <Compile Include="Repositories\Dto\DealSection.cs" />
     <Compile Include="Repositories\EventStore\Event.cs" />
     <Compile Include="Repositories\EventStore\EventStoreClient.cs" />

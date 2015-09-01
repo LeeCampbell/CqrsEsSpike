@@ -12,13 +12,20 @@
                         <Button Command="{Binding EditSelectedDealCommand}" 
                                 CommandParameter="{Binding  }">Edit</Button>
                     </ToolBar>
+                    
                 </ToolBarTray>
+                <ProgressBar IsIndeterminate="True"
+                         Height="10"
+                         DockPanel.Dock="Bottom"
+                         Visibility="{Binding Path=State.IsProcessing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                
                 <DataGrid ItemsSource="{Binding ActiveDeals}"
                           SelectionMode="Single"
                           SelectedItem="{Binding SelectedDeal}">
 
 
                 </DataGrid>
+                
             </DockPanel>
         </TabItem>
         <!--<TabItem Header="Deal History"/>

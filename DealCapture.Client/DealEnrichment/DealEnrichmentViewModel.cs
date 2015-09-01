@@ -21,6 +21,7 @@ namespace DealCapture.Client.DealEnrichment
         public IDisposable Start()
         {
             //Get head
+            //_dealRepo.
             //Play up until head
             //Alert user if the form is dirty and a new evt arrives.
             return null;
