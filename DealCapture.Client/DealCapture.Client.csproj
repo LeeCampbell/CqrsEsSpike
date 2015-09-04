@@ -113,6 +113,7 @@
     <Compile Include="Dashboards\Direction.cs" />
     <Compile Include="DealCreation\DealCreationSection.cs" />
     <Compile Include="DealCreation\DealCreationViewModel.cs" />
+    <Compile Include="DealEnrichment\DealEnrichmentSection.cs" />
     <Compile Include="DealEnrichment\DealEnrichmentView.xaml.cs">
       <DependentUpon>DealEnrichmentView.xaml</DependentUpon>
     </Compile>

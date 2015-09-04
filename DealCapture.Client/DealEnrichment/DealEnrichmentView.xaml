@@ -89,7 +89,7 @@
 
                     <ItemsControl ItemsSource="{Binding Sections}">
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="createDeal:DealEntrySection">
+                            <DataTemplate DataType="createDeal:DealEnrichmentSection">
                                 <StackPanel Orientation="Horizontal">
                                     <HeaderedContentControl Header="Product" >
                                         <ComboBox SelectedValue="{Binding ProductType}"
@@ -103,16 +103,10 @@
                                     </HeaderedContentControl>
 
                                     <HeaderedContentControl Header="Direction" >
-
                                         <ListBox Style="{StaticResource RadioBoxSelectorStyle}"
+                                                 ItemsSource="{x:Static dashboards:Direction.Values}"
                                                  SelectedItem="{Binding Direction}">
-                                            <ListBoxItem Content="{x:Static dashboards:Direction.TraderBuysClientSells}"/>
-                                            <ListBoxItem Content="{x:Static dashboards:Direction.TraderSellsClientBuys}"/>
                                         </ListBox>
-                                        <!--<StackPanel Orientation="Horizontal">
-                                            <RadioButton GroupName="Direction">Sell</RadioButton>
-                                            <RadioButton GroupName="Direction">Buy</RadioButton>
-                                        </StackPanel>-->
                                     </HeaderedContentControl>
 
                                     <HeaderedContentControl Header="Notional">
