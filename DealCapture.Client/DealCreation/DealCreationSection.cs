@@ -1,20 +1,21 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using DealCapture.Client.Annotations;
+using DealCapture.Client.Dashboards;
 using Microsoft.Practices.Prism.Commands;
 
-namespace DealCapture.Client.CreateDeal
+namespace DealCapture.Client.DealCreation
 {
-    public sealed class DealEntrySection : INotifyPropertyChanged
+    public sealed class DealCreationSection : INotifyPropertyChanged
     {
         private string _productType;
         private decimal? _notional;
+        private Direction _direction;
         private DateTime? _deliverFrom;
         private DateTime? _deliverUntil;
 
-        public DealEntrySection()
+        public DealCreationSection()
         {
             PropertyChanged += (s, e) => Validate();
         }
@@ -41,7 +42,18 @@ namespace DealCapture.Client.CreateDeal
             }
         }
 
-        public DateTime? DeliverFrom
+        public Direction Direction
+        {
+            get { return _direction; }
+            set
+            {
+                if (Equals(value, _direction)) return;
+                _direction = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DateTime? DeliveryFrom
         {
             get { return _deliverFrom; }
             set
@@ -52,7 +64,7 @@ namespace DealCapture.Client.CreateDeal
             }
         }
 
-        public DateTime? DeliverUntil
+        public DateTime? DeliveryUntil
         {
             get { return _deliverUntil; }
             set
@@ -68,12 +80,13 @@ namespace DealCapture.Client.CreateDeal
         private void Validate()
         {
             IsValid = !string.IsNullOrEmpty(ProductType)
+                && Direction!=null
                 && Notional.HasValue
-                && DeliverFrom.HasValue
-                && DeliverUntil.HasValue;
+                && DeliveryFrom.HasValue
+                && DeliveryUntil.HasValue;
         }
 
-        public DelegateCommand<DealEntrySection> RemoveSectionCommand { get; set; }
+        public DelegateCommand<DealCreationSection> RemoveSectionCommand { get; set; }
 
         #region INPC
 

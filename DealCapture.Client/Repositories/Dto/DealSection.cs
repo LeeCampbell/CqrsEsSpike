@@ -1,4 +1,5 @@
 using System;
+using DealCapture.Client.Dashboards;
 
 namespace DealCapture.Client.Repositories.Dto
 {
@@ -6,7 +7,8 @@ namespace DealCapture.Client.Repositories.Dto
     {
         public string ProductType { get; set; }
         public decimal Notional { get; set; }
+        public string Direction { get; set; }
         public DateTime DeliveryFrom { get; set; }
-        public DateTime DeliverUntil { get; set; }
+        public DateTime DeliveryUntil { get; set; }
     }
 }

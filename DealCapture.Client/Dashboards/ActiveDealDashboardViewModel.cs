@@ -2,37 +2,48 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using DealCapture.Client.Annotations;
-using DealCapture.Client.CreateDeal;
+using DealCapture.Client.DealCreation;
 using DealCapture.Client.DealEnrichment;
 using DealCapture.Client.Repositories;
 using Microsoft.Practices.Prism.Commands;
 
-namespace DealCapture.Client
+namespace DealCapture.Client.Dashboards
 {
-    public class ActiveDealDashboardViewModel : INotifyPropertyChanged
+    public sealed class ActiveDealDashboardViewModel : INotifyPropertyChanged
     {
+        private int _headVersion = -1;
         private readonly IDealRepository _dealRepo;
         private readonly ObservableCollection<DealRowViewModel> _activeDeals = new ObservableCollection<DealRowViewModel>();
         private DealRowViewModel _selectedDeal;
+        private ViewModelState _state;
 
         public ActiveDealDashboardViewModel(IDealRepository dealRepo)
         {
             _dealRepo = dealRepo;
 
+            State = ViewModelState.Idle;
             CreateDealCommand = new DelegateCommand(ShowDealCapture);
-            EditSelectedDealCommand = new DelegateCommand(ShowDealEnrichment, ()=>SelectedDeal!=null);
+            EditSelectedDealCommand = new DelegateCommand(ShowDealEnrichment, () => SelectedDeal != null);
         }
 
         public IDisposable Start()
         {
-            //TODO: SOTW
-            return _dealRepo.GetAllDealUpdates()
+            State = ViewModelState.Processing;
+            return Observable.Create<DealRowViewModel>(
+                async obs =>
+                {
+                    _headVersion = await _dealRepo.GetAllDealUpdatesHead();
+
+                    return _dealRepo.GetAllDealUpdates()
+                        .Subscribe(obs);
+                })
                 .SubscribeOn(Scheduler.Default)
-                .ObserveOnDispatcher()
-                .Subscribe(ApplyRowUpdate);
+                        .ObserveOnDispatcher()
+                        .Subscribe(ApplyRowUpdate);
         }
 
         public DelegateCommand CreateDealCommand { get; private set; }
@@ -49,21 +60,32 @@ namespace DealCapture.Client
             }
         }
         public ObservableCollection<DealRowViewModel> ActiveDeals { get { return _activeDeals; } }
-        
+
+        public ViewModelState State
+        {
+            get { return _state; }
+            set
+            {
+                if (Equals(value, _state)) return;
+                _state = value;
+                OnPropertyChanged();
+            }
+        }
+
         private void ShowDealCapture()
         {
             var dealId = Guid.NewGuid();
 
-            var dealEntryVm = new DealEntryViewModel(_dealRepo, dealId);
+            var dealEntryVm = new DealCreationViewModel(_dealRepo, dealId);
             var view = new DealCaptureView
             {
                 DataContext = dealEntryVm
             };
 
-            _dealRepo.GetDealUpdates(dealId)
-                .Take(1)
+            dealEntryVm.OnPropertyChanges(vm => vm.State)
+                .Where(state => state.IsTerminal)
                 .TakeUntil(Observable.FromEventPattern(h => view.Closed += h, h => view.Closed -= h))
-                .ObserveOnDispatcher()
+                .Take(1)
                 .Subscribe(_ => view.Close());
 
             view.Show();
@@ -82,14 +104,19 @@ namespace DealCapture.Client
 
         private void ApplyRowUpdate(DealRowViewModel row)
         {
-            int indexOf = IndexOf(ActiveDeals, ad => ad.DealId == row.DealId);  
-            if (indexOf ==-1 )
+            int indexOf = IndexOf(ActiveDeals, ad => ad.DealId == row.DealId);
+            if (indexOf == -1)
             {
                 ActiveDeals.Add(row);
             }
             else
             {
                 ActiveDeals[indexOf] = row;
+            }
+
+            if (row.CategoryVersion >= _headVersion)
+            {
+                State = ViewModelState.Idle;
             }
         }
 
@@ -110,7 +137,7 @@ namespace DealCapture.Client
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
