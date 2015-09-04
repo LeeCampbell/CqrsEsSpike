@@ -135,9 +135,10 @@ namespace DealCapture.Client.DealCreation
             return new DealSection
             {
                 ProductType = input.ProductType,
+                Direction = input.Direction.DtoValue,
                 Notional = input.Notional.Value,
-                DeliveryFrom = input.DeliverFrom.Value,
-                DeliverUntil = input.DeliverUntil.Value
+                DeliveryFrom = input.DeliveryFrom.Value,
+                DeliveryUntil = input.DeliveryUntil.Value
             };
         }
 

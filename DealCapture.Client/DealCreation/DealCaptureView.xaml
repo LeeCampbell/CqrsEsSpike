@@ -1,14 +1,16 @@
 ﻿<Window x:Class="DealCapture.Client.DealCreation.DealCaptureView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="DealCaptureView" 
+        xmlns:dashboards="clr-namespace:DealCapture.Client.Dashboards"
+        xmlns:dto="clr-namespace:DealCapture.Client.Repositories.Dto"
+        xmlns:dealCreation="clr-namespace:DealCapture.Client.DealCreation"
+        Title="Create Deal" 
         Style="{StaticResource PopupRegionStyle}"
         Padding="20"
         Height="450"
         Width="722"
         MinHeight="300"
-        MinWidth="300"
-        MaxWidth="800">
+        MinWidth="300">
     <DockPanel>
         <StackPanel DockPanel.Dock="Top">
             <TextBlock Style="{StaticResource PageHeaderStyle}">
@@ -34,11 +36,8 @@
                     <ComboBoxItem>Client C</ComboBoxItem>
                 </ComboBox>
             </HeaderedContentControl>
-
         </StackPanel>
 
-        
-        
         <DockPanel DockPanel.Dock="Bottom">
             <Button DockPanel.Dock="Left"
                     Command="{Binding SubmitCommand}"
@@ -51,7 +50,7 @@
                          DockPanel.Dock="Bottom"
                          Visibility="{Binding Path=State.IsProcessing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         </DockPanel>
-        
+
         <TextBlock Text="{Binding Path=State.ErrorMessage}"
                    Foreground="Red"
                    DockPanel.Dock="Bottom"
@@ -69,7 +68,7 @@
 
                     <ItemsControl ItemsSource="{Binding Sections}">
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="createDeal:DealEntrySection">
+                            <DataTemplate DataType="dealCreation:DealCreationSection">
                                 <StackPanel Orientation="Horizontal">
                                     <HeaderedContentControl Header="Product" >
                                         <ComboBox SelectedValue="{Binding ProductType}"
@@ -82,16 +81,23 @@
                                         </ComboBox>
                                     </HeaderedContentControl>
 
+                                    <HeaderedContentControl Header="Direction" >
+                                        <ListBox Style="{StaticResource RadioBoxSelectorStyle}"
+                                                 ItemsSource="{x:Static dashboards:Direction.Values}"
+                                                 SelectedItem="{Binding Direction}">
+                                        </ListBox>
+                                    </HeaderedContentControl>
+
                                     <HeaderedContentControl Header="Notional">
                                         <TextBox Text="{Binding Notional, NotifyOnValidationError=True, ValidatesOnDataErrors=True, ValidatesOnNotifyDataErrors=True, ValidatesOnExceptions=True}" />
                                     </HeaderedContentControl>
 
                                     <HeaderedContentControl Header="Deliver from" >
-                                        <DatePicker SelectedDate="{Binding DeliverFrom}" />
+                                        <DatePicker SelectedDate="{Binding DeliveryFrom}" />
                                     </HeaderedContentControl>
 
                                     <HeaderedContentControl Header="Deliver until">
-                                        <DatePicker SelectedDate="{Binding DeliverUntil}" />
+                                        <DatePicker SelectedDate="{Binding DeliveryUntil}" />
                                     </HeaderedContentControl>
 
                                     <Button Command="{Binding RemoveSectionCommand}" CommandParameter="{Binding}"
@@ -111,7 +117,5 @@
                 </StackPanel>
             </ScrollViewer>
         </GroupBox>
-
-
     </DockPanel>
 </Window>

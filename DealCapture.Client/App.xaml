@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="/Styles/Text.xaml"/>
                 <ResourceDictionary Source="/Styles/Button.xaml"/>
                 <ResourceDictionary Source="/Styles/HeaderedContent.xaml"/>
+                <ResourceDictionary Source="/Styles/ListBox.xaml"/>
                 <ResourceDictionary Source="/Styles/TabControl.xaml"/>
                 <ResourceDictionary Source="/Styles/Window.xaml"/>
                 <ResourceDictionary Source="/Styles/DatePicker.xaml"/>

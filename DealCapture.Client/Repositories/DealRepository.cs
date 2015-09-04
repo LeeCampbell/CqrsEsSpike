@@ -103,8 +103,9 @@ namespace DealCapture.Client.Repositories
 
                     Underlying = evt.Sections[0].ProductType,
                     Notional = evt.Sections[0].Notional,
+                    Direction = Direction.Parse(evt.Sections[0].Direction),
                     DeliveryStart = evt.Sections[0].DeliveryFrom,
-                    DeliveryEnd = evt.Sections[0].DeliverUntil,
+                    DeliveryEnd = evt.Sections[0].DeliveryUntil,
                     PercentageFixed = 0
                 };
             }
@@ -119,6 +120,7 @@ namespace DealCapture.Client.Repositories
 
                 Underlying = currentState.Underlying,
                 Notional = currentState.Notional,
+                Direction = Direction.Parse(evt.Sections[0].Direction),
                 DeliveryStart = currentState.DeliveryStart,
                 DeliveryEnd = currentState.DeliveryEnd,
                 PercentageFixed = currentState.PercentageFixed
@@ -131,7 +133,7 @@ namespace DealCapture.Client.Repositories
             row.Underlying = evt.Sections[0].ProductType;
             row.Notional = evt.Sections[0].Notional;
             row.DeliveryStart = evt.Sections[0].DeliveryFrom;
-            row.DeliveryEnd = evt.Sections[0].DeliverUntil;
+            row.DeliveryEnd = evt.Sections[0].DeliveryUntil;
             row.PercentageFixed = 0;
 
             return row;

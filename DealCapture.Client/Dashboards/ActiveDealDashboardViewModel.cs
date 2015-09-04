@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using DealCapture.Client.Annotations;
@@ -32,7 +33,6 @@ namespace DealCapture.Client.Dashboards
         public IDisposable Start()
         {
             State = ViewModelState.Processing;
-
             return Observable.Create<DealRowViewModel>(
                 async obs =>
                 {
@@ -43,9 +43,7 @@ namespace DealCapture.Client.Dashboards
                 })
                 .SubscribeOn(Scheduler.Default)
                         .ObserveOnDispatcher()
-                        .Subscribe(ApplyRowUpdate); ;
-
-            
+                        .Subscribe(ApplyRowUpdate);
         }
 
         public DelegateCommand CreateDealCommand { get; private set; }

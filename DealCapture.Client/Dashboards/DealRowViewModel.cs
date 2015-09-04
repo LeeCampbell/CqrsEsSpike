@@ -5,8 +5,10 @@ using DealCapture.Client.Annotations;
 
 namespace DealCapture.Client.Dashboards
 {
-    public class DealRowViewModel : INotifyPropertyChanged
+    public sealed class DealRowViewModel : INotifyPropertyChanged
     {
+        #region Fields
+
         private readonly Guid _dealId;
         private readonly int _categoryVersion;
         private readonly int _dealVersion;
@@ -17,7 +19,10 @@ namespace DealCapture.Client.Dashboards
         private DateTime _deliveryWindowStartDate;
         private DateTime _deliveryWindowEndDate;
         private string _status;
+        private Direction _direction;
 
+        #endregion
+        
         public DealRowViewModel(Guid dealId, int categoryVersion, int dealVersion)
         {
             _dealId = dealId;
@@ -26,9 +31,7 @@ namespace DealCapture.Client.Dashboards
         }
 
         public Guid DealId { get { return _dealId; } }
-        public int CategoryVersion { get { return _categoryVersion; } }
-        public int DealVersion { get { return _dealVersion; } }
-
+        
         public string Trader
         {
             get { return _trader; }
@@ -72,7 +75,18 @@ namespace DealCapture.Client.Dashboards
                 OnPropertyChanged();
             }
         }
-        
+
+        public Direction Direction
+        {
+            get { return _direction; }
+            set
+            {
+                if (value == _direction) return;
+                _direction = value;
+                OnPropertyChanged();
+            }
+        }
+
         public DateTime DeliveryStart //DeliveryWindowStartDate
         {
             get { return _deliveryWindowStartDate; }
@@ -95,8 +109,6 @@ namespace DealCapture.Client.Dashboards
             }
         }
 
-        public double PercentageFixed { get; set; }
-
         public string Status
         {
             get { return _status; }
@@ -108,13 +120,17 @@ namespace DealCapture.Client.Dashboards
             }
         }
 
+        public double PercentageFixed { get; set; }
+        public int CategoryVersion { get { return _categoryVersion; } }
+        public int DealVersion { get { return _dealVersion; } }
+
 
         #region INPC
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));

@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using DealCapture.Client.Annotations;
+using DealCapture.Client.Dashboards;
 using Microsoft.Practices.Prism.Commands;
 
 namespace DealCapture.Client.DealCreation
@@ -10,6 +11,7 @@ namespace DealCapture.Client.DealCreation
     {
         private string _productType;
         private decimal? _notional;
+        private Direction _direction;
         private DateTime? _deliverFrom;
         private DateTime? _deliverUntil;
 
@@ -40,7 +42,18 @@ namespace DealCapture.Client.DealCreation
             }
         }
 
-        public DateTime? DeliverFrom
+        public Direction Direction
+        {
+            get { return _direction; }
+            set
+            {
+                if (Equals(value, _direction)) return;
+                _direction = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DateTime? DeliveryFrom
         {
             get { return _deliverFrom; }
             set
@@ -51,7 +64,7 @@ namespace DealCapture.Client.DealCreation
             }
         }
 
-        public DateTime? DeliverUntil
+        public DateTime? DeliveryUntil
         {
             get { return _deliverUntil; }
             set
@@ -67,9 +80,10 @@ namespace DealCapture.Client.DealCreation
         private void Validate()
         {
             IsValid = !string.IsNullOrEmpty(ProductType)
+                && Direction!=null
                 && Notional.HasValue
-                && DeliverFrom.HasValue
-                && DeliverUntil.HasValue;
+                && DeliveryFrom.HasValue
+                && DeliveryUntil.HasValue;
         }
 
         public DelegateCommand<DealCreationSection> RemoveSectionCommand { get; set; }
