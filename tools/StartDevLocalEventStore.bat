@@ -1,1 +1,1 @@
-"..\Server\EventStore\EventStore.ClusterNode.exe" --db ..\Server\EventStore\Data --log ..\Server\EventStore\Logs
+".\Server\EventStore\EventStore.ClusterNode.exe" --db .\Server\EventStore\Data --log .\Server\EventStore\Logs

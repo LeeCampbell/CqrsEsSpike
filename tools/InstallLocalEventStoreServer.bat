@@ -7,7 +7,7 @@ REM				* .NET 4.5 (for Zipping/Unzipping)													- http://www.microsoft.com
 SET CurrDir=%~dp0
 SET InstallEventStorePsPath=%CurrDir%Install-EventStore.ps1
 
-cd..
+REM cd..
 SET DownloadUrl=http://download.geteventstore.com/binaries/EventStore-OSS-Win-v3.0.1.zip
 SET TargetFolderPath=%cd%\Server\EventStore
 
